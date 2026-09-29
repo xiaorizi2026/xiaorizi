@@ -446,7 +446,7 @@ body {
         '<button class="btn ghost" data-act="import">导入备份</button>' +
         '<input type="file" id="import-file" accept=".json,application/json" style="display:none" />' +
       '</div>' +
-      '<div class="ver">小日子 v6 · 日历 / 进度条 / 饼图 / 重复日程 / 置顶 / 小结</div>';
+      '<div class="ver">小日子 v7 · 修复打卡后跳回顶部</div>';
   }
 
   function countdownCard(n) {
@@ -807,12 +807,15 @@ body {
     "#/notes": renderNotes
   };
 
+  var lastRoute = null;
   function render() {
     var app = document.getElementById("app");
     var route = location.hash || "#/home";
     if (!routes[route]) route = "#/home";
+    var y = window.scrollY;              // 同一页面内操作（打卡/勾选）保持滚动位置
     routes[route](app);
-    window.scrollTo(0, 0);
+    if (route === lastRoute) window.scrollTo(0, y); else window.scrollTo(0, 0);
+    lastRoute = route;
   }
 
   /* ================= 事件 ================= */
